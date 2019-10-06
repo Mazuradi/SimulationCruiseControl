@@ -1,0 +1,23 @@
+ENGINE_CONTROL = ENGINEOFF,
+ENGINEOFF = (engineOn -> ENGINEON),
+ENGINEON = (adjustSpeed -> ENGINEON
+		    |setThrottle -> ENGINEON
+			|accelerate -> ENGINEON
+			|brake -> ENGINEON
+			|engineOff -> ENGINEOFF).
+
+CRUISE_CONTROL = ENGINEOFF,
+ENGINEON = (setSpeed -> ENGINEON
+			|on -> CRUISE
+			|engineOff -> ENGINEOFF),
+ENGINEOFF = (engineOn -> ENGINEON),
+CRUISE = (setSpeed -> CRUISE
+		  |setThrottle -> CRUISE
+		  |brake -> CRUISEPAUSED
+		  |off -> ENGINEON
+		  |engineOff -> ENGINEOFF),
+CRUISEPAUSED = (setSpeed -> CRUISEPAUSED
+		 |resume -> CRUISE
+		 |engineOff -> ENGINEOFF).
+
+||SYSTEM = (ENGINE_CONTROL || CRUISE_CONTROL).
